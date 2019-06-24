@@ -1,0 +1,10 @@
+[
+  {
+    "path": "server1-endpoint",
+    "value": "localhost:8888->//nodeName"
+  },
+  {
+    "path": "server2-endpoint",
+    "value": "localhost:9999"
+  }
+]
