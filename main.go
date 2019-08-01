@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -11,12 +12,15 @@ import (
 	"net/http"
 	"os"
 	"path"
-	"strings"
+	"path/filepath"
+	textTemplate "text/template"
 )
 
 type Config struct {
-	Path  string `json:"path"`
-	Value string `json:"value"`
+	Path      string   `json:"path"`
+	Source    string   `json:"source"`
+	Template  string   `json:"template"`
+	Arguments []string `json:"arguments"`
 }
 
 var (
@@ -24,12 +28,14 @@ var (
 	root           string
 	mode           string
 	configFilePath string
-	configMap      map[string]string
+	configMap      map[string]Config
 	router         *gin.Engine
 )
 
 func init() {
-	configMap = make(map[string]string)
+	configMap = make(map[string]Config)
+
+	gin.SetMode(gin.ReleaseMode)
 	router = gin.Default()
 }
 
@@ -68,39 +74,28 @@ func main() {
 		}
 
 		for _, config := range configArr {
-			configMap[config.Path] = config.Value
-			if config.Path == "config" {
-				log.Fatal("/config is reserved")
-			} else {
-				router.POST(config.Path, handlerCreator(config.Path))
-			}
+			configPath := config.Path
+			configMap[configPath] = config
+			router.POST(configPath, handlerCreator(configPath))
 		}
 	}
-
-	router.POST("/config", func(c *gin.Context) {
-		c.Request.ParseForm()
-		form := c.Request.PostForm
-		for key := range form {
-			if _, ok := configMap[key]; !ok {
-				router.POST(key, handlerCreator(key))
-			}
-			configMap[key] = form.Get(key)
-		}
-
-		c.JSON(200, configMap)
-	})
 
 	switch mode {
 	case "spa":
 		router.GET("/*page", func(c *gin.Context) {
 			urlPath := c.Request.URL.Path
-			if strings.Contains(urlPath, ".") {
-				c.File(path.Join(root, urlPath))
-			} else {
-				c.File(path.Join(root, "index.html"))
-			}
-		})
+			fullPath := filepath.FromSlash(path.Join(root, urlPath))
+			rel, _ := filepath.Rel(root, fullPath)
 
+			if len(rel) > 0 && rel != "." {
+				fileInfo, err := os.Stat(rel)
+				if !os.IsNotExist(err) && fileInfo.Mode().IsRegular() {
+					c.File(rel)
+					return
+				}
+			}
+			c.File(path.Join(root, "index.html"))
+		})
 	case "fs":
 	default:
 		http.Handle("/", http.FileServer(http.Dir(root)))
@@ -116,23 +111,43 @@ func handlerCreator(key string) func(c *gin.Context) {
 		if !ok {
 			c.AbortWithStatus(404)
 		} else {
-			tokens := strings.Split(value, "->")
-			if len(tokens) > 1 {
-				fmt.Println(tokens[0], tokens[1])
+			source := value.Source
+			template := value.Template
+			arguments := value.Arguments
 
-				doc, err := jsonquery.LoadURL(tokens[0])
+			if len(template) > 1 {
+				doc, err := jsonquery.LoadURL(source)
 				if err != nil {
 					c.AbortWithStatus(404)
 				}
-				var nodeName string
-				nodeNameNode := jsonquery.FindOne(doc, tokens[1])
-				if nodeNameNode != nil {
-					nodeName = nodeNameNode.InnerText()
+
+				tmpl, err := textTemplate.New("template").Parse(template)
+				if err != nil {
+					c.AbortWithStatus(404)
+					return
 				}
 
-				c.JSON(200, nodeName)
+				buf := new(bytes.Buffer)
+
+				queries := make([]string, len(arguments))
+				for i, argument := range arguments {
+					nodeNameNode := jsonquery.FindOne(doc, argument)
+					if nodeNameNode != nil {
+						queries[i] = nodeNameNode.InnerText()
+					} else {
+						queries[i] = ""
+					}
+				}
+
+				err = tmpl.Execute(buf, queries)
+				if err != nil {
+					c.AbortWithStatus(404)
+					return
+				}
+
+				c.JSON(200, buf.String())
 			} else {
-				c.JSON(200, value)
+				c.JSON(200, source)
 			}
 		}
 	}
