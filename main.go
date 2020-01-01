@@ -88,9 +88,9 @@ func main() {
 			rel, _ := filepath.Rel(root, fullPath)
 
 			if len(rel) > 0 && rel != "." {
-				fileInfo, err := os.Stat(rel)
+				fileInfo, err := os.Stat(fullPath)
 				if !os.IsNotExist(err) && fileInfo.Mode().IsRegular() {
-					c.File(rel)
+					c.File(fullPath)
 					return
 				}
 			}
