@@ -102,7 +102,10 @@ func main() {
 	}
 
 	log.Println(fmt.Sprintf("Listening on %s, serving %s, in %s mode", port, root, mode))
-	router.Run(fmt.Sprintf(":%s", port))
+	err := router.Run(fmt.Sprintf(":%s", port))
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func handlerCreator(key string) func(c *gin.Context) {
