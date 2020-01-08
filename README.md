@@ -29,6 +29,6 @@ staticserver
 ### Golang array-templated string format
 - ```{{index . 0}}{{index . 1}}{{index . 2}}....```
 
-### Warning
+### Warning(s)
 - The mime-type in Windows registry may be modified by other software causing wrong Content-Type in response, see issue(s)
   - https://github.com/golang/go/issues/32350
