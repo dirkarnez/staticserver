@@ -103,15 +103,36 @@ func main() {
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Multiple file upload</title>
+	<link rel="stylesheet" href="https://unpkg.com/purecss">
 </head>
 <body>
-<h1>Upload multiple files with fields</h1>
-
-<form action="/upload" method="post" enctype="multipart/form-data">
-    Files: <input type="file" name="files" multiple><br><br>
-    <input type="submit" value="Submit">
+<div class="pure-u-1">
+<form class="pure-form pure-form-aligned" action="/upload" method="post" enctype="multipart/form-data">
+   <fieldset>
+        <div class="pure-control-group">
+            <label for="name">Files</label>
+            <input type="file" name="files" multiple>
+        </div>
+        <div class="pure-control-group">
+            <label for="name">Image</label>
+			<input type="file" name="files" multiple accept="image/*" capture>
+        </div>
+        <div class="pure-control-group">
+            <label for="name">Video</label>
+			<input type="file" name="files" multiple accept="video/*" capture>
+        </div>
+        <div class="pure-control-group">
+            <label for="name">Audio</label>
+            <input type="file" name="files" multiple accept="audio/*" capture>
+        </div>
+        <div class="pure-controls">
+			<input class="pure-button pure-button-primary" type="submit" value="Submit">
+        </div>
+    </fieldset>
 </form>
+</div>
 </body>
 </html>`
 		router.SetHTMLTemplate(template.Must(template.New("index").Parse(tpl)))
@@ -136,8 +157,7 @@ func main() {
 			c.String(http.StatusOK, fmt.Sprintf("%d files uploaded!", len(files)))
 		})
 	case "fs":
-	default:
-		http.Handle("/", http.FileServer(http.Dir(root)))
+		router.StaticFS("/", gin.Dir(root, true))
 	}
 
 	log.Println(fmt.Sprintf("Listening on %s, serving %s, in %s mode", port, root, mode))
