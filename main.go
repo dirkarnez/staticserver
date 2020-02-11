@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/antchfx/jsonquery"
 	"github.com/gin-gonic/gin"
+	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -42,7 +43,7 @@ func init() {
 func main() {
 	flag.StringVar(&root, "root", "", "Absolute path for root directory")
 	flag.StringVar(&port, "port", "", "Port, default is 80")
-	flag.StringVar(&mode, "mode", "", "Mode")
+	flag.StringVar(&mode, "mode", "", "Mode: fs, spa, upload. Default fs mode")
 	flag.StringVar(&configFilePath, "config", "", "Config file path")
 	flag.Parse()
 
@@ -95,6 +96,44 @@ func main() {
 				}
 			}
 			c.File(path.Join(root, "index.html"))
+		})
+	case "upload":
+		const tpl = `
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Multiple file upload</title>
+</head>
+<body>
+<h1>Upload multiple files with fields</h1>
+
+<form action="/upload" method="post" enctype="multipart/form-data">
+    Files: <input type="file" name="files" multiple><br><br>
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>`
+		router.SetHTMLTemplate(template.Must(template.New("index").Parse(tpl)))
+
+		router.GET("/", func(c *gin.Context) {
+			c.HTML(http.StatusOK,"index", gin.H{})
+		})
+
+		router.POST("/upload", func(c *gin.Context) {
+			// Multipart form
+			form, _ := c.MultipartForm()
+			files := form.File["files"]
+
+			for _, file := range files {
+				filename := filepath.Base(file.Filename)
+				log.Println(filename)
+				if err := c.SaveUploadedFile(file, filename); err != nil {
+					c.String(http.StatusBadRequest, fmt.Sprintf("upload file err: %s", err.Error()))
+					return
+				}
+			}
+			c.String(http.StatusOK, fmt.Sprintf("%d files uploaded!", len(files)))
 		})
 	case "fs":
 	default:
