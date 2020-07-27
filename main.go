@@ -1,40 +1,36 @@
 package main
 
 import (
-	"bytes"
-	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/antchfx/jsonquery"
-	"github.com/gin-gonic/gin"
 	"html/template"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"path"
 	"path/filepath"
-	textTemplate "text/template"
+
+	"github.com/gin-gonic/gin"
 )
 
-type Config struct {
-	Path      string   `json:"path"`
-	Source    string   `json:"source"`
-	Template  string   `json:"template"`
-	Arguments []string `json:"arguments"`
-}
+// type Config struct {
+// 	Path      string   `json:"path"`
+// 	Source    string   `json:"source"`
+// 	Template  string   `json:"template"`
+// 	Arguments []string `json:"arguments"`
+// }
 
 var (
-	port           string
-	root           string
-	mode           string
-	configFilePath string
-	configMap      map[string]Config
-	router         *gin.Engine
+	port uint64
+	root string
+	mode string
+	// configFilePath string
+	// configMap      map[string]Config
+	router *gin.Engine
 )
 
 func init() {
-	configMap = make(map[string]Config)
+	// configMap = make(map[string]Config)
 
 	gin.SetMode(gin.ReleaseMode)
 	router = gin.Default()
@@ -42,9 +38,9 @@ func init() {
 
 func main() {
 	flag.StringVar(&root, "root", "", "Absolute path for root directory")
-	flag.StringVar(&port, "port", "", "Port, default is 80")
-	flag.StringVar(&mode, "mode", "", "Mode: fs, spa, upload. Default fs mode")
-	flag.StringVar(&configFilePath, "config", "", "Config file path")
+	flag.Uint64Var(&port, "port", 80, "Port, default is 80")
+	flag.StringVar(&mode, "mode", "fs", "Mode: fs, spa, upload. Default fs mode")
+	// flag.StringVar(&configFilePath, "config", "", "Config file path")
 	flag.Parse()
 
 	if len(root) < 1 {
@@ -55,31 +51,27 @@ func main() {
 		root = dir
 	}
 
-	if len(port) < 1 {
-		port = "80"
+	if port > 1<<16-1 {
+		log.Fatal("Port number too large")
 	}
 
-	if len(mode) < 1 {
-		mode = "fs"
-	}
+	// if len(configFilePath) > 0 {
+	// 	raw, err := ioutil.ReadFile(configFilePath)
+	// 	if err != nil {
+	// 		fmt.Println("Config file not found. No configuration is loaded.")
+	// 	}
 
-	if len(configFilePath) > 0 {
-		raw, err := ioutil.ReadFile(configFilePath)
-		if err != nil {
-			fmt.Println("Config file not found. No configuration is loaded.")
-		}
+	// 	var configArr []Config
+	// 	if err := json.Unmarshal(raw, &configArr); err != nil {
+	// 		fmt.Println("Cannot parse config file. No configuration is loaded.")
+	// 	}
 
-		var configArr []Config
-		if err := json.Unmarshal(raw, &configArr); err != nil {
-			fmt.Println("Cannot parse config file. No configuration is loaded.")
-		}
-
-		for _, config := range configArr {
-			configPath := config.Path
-			configMap[configPath] = config
-			router.POST(configPath, handlerCreator(configPath))
-		}
-	}
+	// 	for _, config := range configArr {
+	// 		configPath := config.Path
+	// 		configMap[configPath] = config
+	// 		router.POST(configPath, handlerCreator(configPath))
+	// 	}
+	// }
 
 	switch mode {
 	case "spa":
@@ -138,7 +130,7 @@ func main() {
 		router.SetHTMLTemplate(template.Must(template.New("index").Parse(tpl)))
 
 		router.GET("/", func(c *gin.Context) {
-			c.HTML(http.StatusOK,"index", gin.H{})
+			c.HTML(http.StatusOK, "index", gin.H{})
 		})
 
 		router.POST("/upload", func(c *gin.Context) {
@@ -158,59 +150,65 @@ func main() {
 		})
 	case "fs":
 		router.StaticFS("/", gin.Dir(root, true))
+	default:
+		log.Fatalf("%s mode is not supported\n", mode)
 	}
 
-	log.Println(fmt.Sprintf("Listening on %s, serving %s, in %s mode", port, root, mode))
-	err := router.Run(fmt.Sprintf(":%s", port))
+	log.Println(fmt.Sprintf("Listening on %d, serving %s, in %s mode", port, root, mode))
+	err := router.Run(fmt.Sprintf(":%d", port))
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func handlerCreator(key string) func(c *gin.Context) {
-	return func(c *gin.Context) {
-		value, ok := configMap[key]
-		if !ok {
-			c.AbortWithStatus(404)
-		} else {
-			source := value.Source
-			template := value.Template
-			arguments := value.Arguments
+// func handlerCreator(key string) func(c *gin.Context) {
+// 	return func(c *gin.Context) {
+// 		value, ok := configMap[key]
+// 		if !ok {
+// 			c.AbortWithStatus(404)
+// 		} else {
+// 			source := value.Source
+// 			template := value.Template
+// 			arguments := value.Arguments
 
-			if len(template) > 1 {
-				doc, err := jsonquery.LoadURL(source)
-				if err != nil {
-					c.AbortWithStatus(404)
-				}
+// 			doc, err := jsonquery.LoadURL(source)
+// 			if err != nil {
+// 				c.AbortWithStatus(404)
+// 			}
 
-				tmpl, err := textTemplate.New("template").Parse(template)
-				if err != nil {
-					c.AbortWithStatus(404)
-					return
-				}
+// 			if len(template) > 1 {
+// 				argumentsLen := len(arguments)
 
-				buf := new(bytes.Buffer)
+// 				if argumentsLen > 0 {
+// 					tmpl, err := textTemplate.New("template").Parse(template)
+// 					if err != nil {
+// 						c.AbortWithStatus(404)
+// 						return
+// 					}
 
-				queries := make([]string, len(arguments))
-				for i, argument := range arguments {
-					nodeNameNode := jsonquery.FindOne(doc, argument)
-					if nodeNameNode != nil {
-						queries[i] = nodeNameNode.InnerText()
-					} else {
-						queries[i] = ""
-					}
-				}
+// 					buf := new(bytes.Buffer)
+// 					queries := make([]string, argumentsLen)
+// 					for i, argument := range arguments {
+// 						nodeNameNode := jsonquery.FindOne(doc, argument)
+// 						if nodeNameNode != nil {
+// 							queries[i] = nodeNameNode.InnerText()
+// 						} else {
+// 							queries[i] = ""
+// 						}
+// 					}
 
-				err = tmpl.Execute(buf, queries)
-				if err != nil {
-					c.AbortWithStatus(404)
-					return
-				}
+// 					err = tmpl.Execute(buf, queries)
+// 					if err != nil {
+// 						c.AbortWithStatus(404)
+// 						return
+// 					}
 
-				c.JSON(200, buf.String())
-			} else {
-				c.JSON(200, source)
-			}
-		}
-	}
-}
+// 					c.JSON(200, buf.String())
+// 				}
+
+// 			} else {
+// 				c.JSON(200, source)
+// 			}
+// 		}
+// 	}
+// }
