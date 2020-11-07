@@ -20,7 +20,12 @@ staticserver
 - The mime-type in Windows registry may be modified by other software causing wrong `Content-Type` in response, see issue(s)
   - https://github.com/golang/go/issues/32350
     - How to fix: `regedit` -> go to `Computer\HKEY_CLASSES_ROOT\.js` -> set `Content Type` to `application/javascript`
+    - It should be platform-independent anyway
     
+- Some server-side files does not have their correct `Content-Type` in response (`text/html; charset=utf-8`), found
+  - [ ] `.woff`
+  - [ ] `.ttf`
+
 ### Reference
 - https://github.com/svenstaro/miniserve
 - [HFS ~ HTTP File Server](https://www.rejetto.com/hfs/)
