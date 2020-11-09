@@ -13,6 +13,8 @@ staticserver
 - [x] Single Page Application
 - [x] File Server
 - [x] Upload Server
+- [ ] Auto-open default browser
+  - https://github.com/chromedp/chromedp/blob/master/allocate.go#L331
 - [ ] Chatroom
 - [ ] Directory-synchronization server
 
