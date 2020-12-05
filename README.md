@@ -31,3 +31,4 @@ staticserver
 ### Reference
 - https://github.com/svenstaro/miniserve
 - [HFS ~ HTTP File Server](https://www.rejetto.com/hfs/)
+- https://github.com/caddyserver/caddy
