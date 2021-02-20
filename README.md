@@ -10,7 +10,7 @@ staticserver
 ```
 
 ### TODOs
-- [x] Single Page Application
+- [ ] Single Page Application embedded
 - [ ] File Server
   - [ ] Streaming (Music, Videos)
 - [x] Upload Server
