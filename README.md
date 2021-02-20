@@ -11,7 +11,8 @@ staticserver
 
 ### TODOs
 - [x] Single Page Application
-- [x] File Server
+- [ ] File Server
+  - [ ] Streaming (Music, Videos)
 - [x] Upload Server
 - [ ] Directory-synchronization server
 - [ ] Chatroom
