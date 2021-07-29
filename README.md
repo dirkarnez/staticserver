@@ -33,6 +33,7 @@ staticserver
   - [ ] `.ttf`
 
 ### Reference
+- [svrxjs/svrx: Server-X: A pluggable frontend server built for efficient front-end development](https://github.com/svrxjs/svrx)
 - https://github.com/svenstaro/miniserve
 - [HFS ~ HTTP File Server](https://www.rejetto.com/hfs/)
 - https://github.com/caddyserver/caddy
