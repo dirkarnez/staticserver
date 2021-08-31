@@ -34,6 +34,7 @@ staticserver
 
 ### Reference
 - [svrxjs/svrx: Server-X: A pluggable frontend server built for efficient front-end development](https://github.com/svrxjs/svrx)
-- https://github.com/svenstaro/miniserve
+- [svenstaro/miniserve: 🌟 For when you really just want to serve some files over HTTP right now!](https://github.com/svenstaro/miniserve)
 - [HFS ~ HTTP File Server](https://www.rejetto.com/hfs/)
-- https://github.com/caddyserver/caddy
+- [caddyserver/caddy: Fast, multi-platform web server with automatic HTTPS](https://github.com/caddyserver/caddy)
+  - [iris/_examples/caddy at master · kataras/iris](https://github.com/kataras/iris/tree/master/_examples/caddy)
