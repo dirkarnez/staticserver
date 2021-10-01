@@ -34,6 +34,7 @@ staticserver
   - [ ] `.ttf`
 
 ### Reference
+- [http-server - npm](https://www.npmjs.com/package/http-server)
 - [svrxjs/svrx: Server-X: A pluggable frontend server built for efficient front-end development](https://github.com/svrxjs/svrx)
 - [svenstaro/miniserve: 🌟 For when you really just want to serve some files over HTTP right now!](https://github.com/svenstaro/miniserve)
 - [HFS ~ HTTP File Server](https://www.rejetto.com/hfs/)
