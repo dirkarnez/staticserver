@@ -10,6 +10,7 @@ staticserver
 ```
 
 ### TODOs
+- [ ] force no-caching in client-side
 - [ ] Single Page Application embedded
 - [ ] File Server
   - [ ] Streaming (Music, Videos)
