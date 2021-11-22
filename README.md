@@ -18,8 +18,9 @@ staticserver
 - [ ] Directory-synchronization server
 - [ ] Chatroom
   - [ ] Clipboard Server
-- [ ] Fix MIMEType
-  - `.apk` file downloaded as `.zip` 
+- [ ] Fix MIMEType, add customization support
+  - `application/vnd.android.package-archive` for `.apk`
+  - `application/wasm` for `.wasm`
 - [ ] Auto-open default browser
   - https://github.com/chromedp/chromedp/blob/master/allocate.go#L331
 
