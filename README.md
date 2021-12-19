@@ -36,6 +36,7 @@ staticserver
 
 ### Reference
 - [**GoogleChromeLabs/simplehttp2server: A simple HTTP/2 server for development**](https://github.com/GoogleChromeLabs/simplehttp2server)
+- [**kangc666/MyPHPServer: A easy PHP Server written in Golang**](https://github.com/kangc666/MyPHPServer)
 - [http-server - npm](https://www.npmjs.com/package/http-server)
 - [svrxjs/svrx: Server-X: A pluggable frontend server built for efficient front-end development](https://github.com/svrxjs/svrx)
 - [svenstaro/miniserve: 🌟 For when you really just want to serve some files over HTTP right now!](https://github.com/svenstaro/miniserve)
