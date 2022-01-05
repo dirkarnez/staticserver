@@ -10,6 +10,10 @@ staticserver
 ```
 
 ### TODOs
+- [ ] directory upload
+  - ```html
+    <input type="file" id="ctrl" webkitdirectory directory multiple/>
+    ``` 
 - [ ] force no-caching in client-side
 - [ ] Single Page Application embedded
 - [ ] File Server
