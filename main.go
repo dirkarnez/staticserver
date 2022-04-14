@@ -54,6 +54,13 @@ func main() {
 	if port > 1<<16-1 {
 		log.Fatal("Port number too large")
 	}
+	
+	if len(mode) < 1 {
+		file, err := os.OpenFile(path.Join(root, "index.html"))
+		if err == nil {
+			mode = "spa"
+		}
+	}
 
 	// if len(configFilePath) > 0 {
 	// 	raw, err := ioutil.ReadFile(configFilePath)
