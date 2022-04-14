@@ -39,7 +39,7 @@ func init() {
 func main() {
 	flag.StringVar(&root, "root", "", "Absolute path for root directory")
 	flag.Uint64Var(&port, "port", 80, "Port, default is 80")
-	flag.StringVar(&mode, "mode", "fs", "Mode: fs, spa, upload. Default fs mode")
+	flag.StringVar(&mode, "mode", "", "Mode: fs, spa, upload. Default fs mode")
 	// flag.StringVar(&configFilePath, "config", "", "Config file path")
 	flag.Parse()
 
@@ -54,10 +54,12 @@ func main() {
 	if port > 1<<16-1 {
 		log.Fatal("Port number too large")
 	}
-	
+
 	if len(mode) < 1 {
-		file, err := os.OpenFile(path.Join(root, "index.html"))
-		if err == nil {
+		_, err := os.Open(filepath.Join(root, "index.html"))
+		if err != nil {
+			mode = "fs"
+		} else {
 			mode = "spa"
 		}
 	}

@@ -10,6 +10,7 @@ staticserver
 ```
 
 ### TODOs
+- [ ] prompt to auto assign port if default 80 is used
 - [ ] directory upload
   - ```html
     <input type="file" id="ctrl" webkitdirectory directory multiple/>
