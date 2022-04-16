@@ -1,6 +1,6 @@
 staticserver
 ======================
-Minimalistic HTTP web-server for file-sharing, single-page application hosting
+Minimalistic HTTP web-server for file-sharing, single-page application hosting and many more. Intended for development use / as an utility, not for production use
 
 ```
 staticserver 
@@ -11,6 +11,8 @@ staticserver
 
 ### TODOs
 - [ ] **pdf mode**
+- [ ] **encoder mode**
+- [ ] **proxy mode**
 - [ ] prompt to auto assign port if default 80 is used
 - [ ] directory upload
   - ```html
