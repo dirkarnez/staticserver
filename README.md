@@ -10,6 +10,7 @@ staticserver
 ```
 
 ### TODOs
+- [ ] **pdf mode**
 - [ ] prompt to auto assign port if default 80 is used
 - [ ] directory upload
   - ```html
