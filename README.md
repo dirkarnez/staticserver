@@ -19,9 +19,8 @@ staticserver
     <input type="file" id="ctrl" webkitdirectory directory multiple/>
     ``` 
 - [ ] force no-caching in client-side
-- [ ] Single Page Application embedded
 - [ ] File Server
-  - [ ] Streaming (Music, Videos)
+  - [ ] Streaming (Music, Videos, text files)
 - [x] Upload Server
 - [ ] Directory-synchronization server
 - [ ] Chatroom
