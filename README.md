@@ -11,6 +11,7 @@ staticserver
 
 ### TODOs
 - [ ] **pdf mode**
+  - a LAN version of [dirkarnez/webcam-playground](https://github.com/dirkarnez/webcam-playground) which the `.pdf` file is uploaded to the host computer
 - [ ] **encoder mode**
 - [ ] **proxy mode**
 - [ ] prompt to auto assign port if default 80 is used
