@@ -10,7 +10,8 @@ staticserver
 ```
 
 ### TODOs
-- [ ] **pdf mode**
+- [ ] **HTTPS**
+- [ ] **pdf mode** **(requires https)**
   - a LAN version of [dirkarnez/webcam-playground](https://github.com/dirkarnez/webcam-playground) which the `.pdf` file is uploaded to the host computer
 - [ ] **encoder mode**
 - [ ] **proxy mode**
