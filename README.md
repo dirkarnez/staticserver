@@ -15,6 +15,7 @@ staticserver
   - a LAN version of [dirkarnez/webcam-playground](https://github.com/dirkarnez/webcam-playground) which the `.pdf` file is uploaded to the host computer
 - [ ] **encoder mode**
 - [ ] **proxy mode**
+- [ ] **media streaming**
 - [ ] prompt to auto assign port if default 80 is used
 - [ ] directory upload
   - ```html
