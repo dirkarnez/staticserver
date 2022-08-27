@@ -45,6 +45,20 @@ staticserver
   - [ ] `.woff`
   - [ ] `.ttf`
 
+### MIME
+- [Common MIME types - HTTP | MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types)
+- Sample `mime.yaml` file (in case user-defined mime is needed, create one under the working directory)
+```yaml
+.otf: font/otf
+.woff: font/woff
+.woff2: font/woff2
+.ttf: font/ttf
+.ico: image/vnd.microsoft.icon
+.apk: application/vnd.android.package-archive
+.wasm: application/wasm
+.js: application/javascript
+```
+
 ### Reference
 - [**GoogleChromeLabs/simplehttp2server: A simple HTTP/2 server for development**](https://github.com/GoogleChromeLabs/simplehttp2server)
 - [**kangc666/MyPHPServer: A easy PHP Server written in Golang**](https://github.com/kangc666/MyPHPServer)
