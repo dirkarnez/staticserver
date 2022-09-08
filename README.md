@@ -35,6 +35,9 @@ staticserver
 - [ ] Auto-open default browser
   - https://github.com/chromedp/chromedp/blob/master/allocate.go#L331
 
+### TODOs (`2.0.0`)
+- spa mode bugs
+
 ### Known Issue(s)
 - The mime-type in Windows registry may be modified by other software causing wrong `Content-Type` in response, see issue(s)
   - https://github.com/golang/go/issues/32350
