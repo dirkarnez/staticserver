@@ -72,7 +72,10 @@ func main() {
 			ctx.ContentType(mimeForExtension)
 			ctx.Next()
 		})
-		app.HandleDir("/", iris.Dir(root))
+		app.HandleDir("/", iris.Dir(root), iris.DirOptions{
+			IndexName: "index.html",
+			SPA:       true,
+		})
 	default:
 		log.Fatalf("%s mode is not supported\n", mode)
 	}
