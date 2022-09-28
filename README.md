@@ -27,7 +27,7 @@ staticserver
 - [x] Upload Server
 - [ ] Directory-synchronization server
 - [ ] Chatroom
-  - [ ] Clipboard Server
+- [x] Clipboard Server
 - [ ] Fix MIMEType, add customization support
   - `application/vnd.android.package-archive` for `.apk`
   - `application/wasm` for `.wasm`
