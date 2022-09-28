@@ -6,9 +6,15 @@ import (
 	"fmt"
 	"log"
 	"mime"
+	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"runtime"
+	"strings"
+	"time"
 
+	"github.com/dirkarnez/staticserver/views"
 	"github.com/kataras/iris/v12"
 	"gopkg.in/yaml.v3"
 )
@@ -22,7 +28,7 @@ var (
 func main() {
 	flag.StringVar(&root, "root", "", "Absolute path for root directory")
 	flag.Uint64Var(&port, "port", 80, "Port, default is 80")
-	flag.StringVar(&mode, "mode", "", "Mode: fs, spa, upload. Default fs mode")
+	flag.StringVar(&mode, "mode", "", "Mode: fs, spa, upload, clipboard. Default fs mode")
 	flag.Parse()
 
 	if len(root) < 1 {
@@ -76,6 +82,34 @@ func main() {
 			IndexName: "index.html",
 			SPA:       true,
 		})
+	case "clipboard":
+		app.Get("/", func(ctx iris.Context) {
+			ctx.HTML(views.Clipboard)
+		})
+
+		app.Post("/clipboard", func(ctx iris.Context) {
+			input := ctx.FormValue("input")
+			fileName := fmt.Sprintf("%s.txt", strings.ReplaceAll(time.Now().Format(time.RFC3339), ":", "-"))
+			file, err := os.Create(fileName)
+			if err != nil {
+				ctx.StopWithError(iris.StatusInternalServerError, err)
+				return
+			}
+			defer file.Close()
+
+			n, err := file.WriteString(input)
+			if err != nil {
+				ctx.StopWithError(iris.StatusInternalServerError, err)
+				return
+			}
+
+			if n != len(input) {
+				ctx.StopWithError(iris.StatusInternalServerError, fmt.Errorf("Incomplete data is written"))
+				return
+			}
+			log.Printf("%s is created with %d!", fileName, n)
+			ctx.StatusCode(http.StatusOK)
+		})
 	default:
 		log.Fatalf("%s mode is not supported\n", mode)
 	}
@@ -111,7 +145,6 @@ func loadMIMEOverrides() map[string]string {
 	}
 	return m
 }
-
 
 // openURL opens a browser window to the specified location.
 // This code originally appeared at:
