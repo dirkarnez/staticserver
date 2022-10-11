@@ -12,7 +12,9 @@ jobs:
       targetZip: ${{ github.event.repository.name }}-${{ github.ref_name }}.zip
     steps:
       - uses: actions/checkout@v2
-      
+        with:
+          ref: 2.0.0
+          
       - name: Setup go
         uses: actions/setup-go@v2
         with:
