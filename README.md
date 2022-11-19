@@ -21,17 +21,19 @@ staticserver
   - ```html
     <input type="file" id="ctrl" webkitdirectory directory multiple/>
     ``` 
-- [ ] force no-caching in client-side
+- [ ] force no-caching in client-side (no caching must be enabled by default to avoid unexpected outdated content, when people need caching they should enable by themselves)
+  - [Search · cache](https://github.com/caddyserver/caddy/search?q=cache)
 - [ ] File Server
   - [ ] Streaming (Music, Videos, text files)
 - [x] Upload Server
 - [ ] Directory-synchronization server
 - [ ] Chatroom
 - [x] Clipboard Server
-- [ ] Fix MIMEType, add customization support
+- [ ] Fix MIMEType + encoding (e.g. utf-8), add customization support
   - `application/vnd.android.package-archive` for `.apk`
   - `application/wasm` for `.wasm`
   - `text/css` for `.css`
+  - [maui/StaticContentProvider.cs at main · dotnet/maui](https://github.com/dotnet/maui/blob/main/src/BlazorWebView/src/Maui/Windows/StaticContentProvider.cs)
 - [ ] Auto-open default browser
   - https://github.com/chromedp/chromedp/blob/master/allocate.go#L331
 
