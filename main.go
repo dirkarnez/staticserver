@@ -58,6 +58,7 @@ func main() {
 
 	app := iris.New()
 	app.Use(iris.Compression)
+	app.Use(iris.NoCache)
 	app.OnErrorCode(iris.StatusNotFound, func(ctx iris.Context) {
 		ctx.Writef("404 not found here")
 	})
@@ -104,7 +105,7 @@ func main() {
 			}
 
 			if n != len(input) {
-				ctx.StopWithError(iris.StatusInternalServerError, fmt.Errorf("Incomplete data is written"))
+				ctx.StopWithError(iris.StatusInternalServerError, fmt.Errorf("incomplete data is written"))
 				return
 			}
 			log.Printf("%s is created with %d!", fileName, n)
@@ -114,7 +115,7 @@ func main() {
 		log.Fatalf("%s mode is not supported\n", mode)
 	}
 
-	log.Println(fmt.Sprintf("Listening on %d, serving %s, in %s mode", port, root, mode))
+	log.Printf("Listening on %d, serving %s, in %s mode\n", port, root, mode)
 	err := app.Listen( // Start the web server at localhost:8080
 		fmt.Sprintf(":%d", port),
 		// skip err server closed when CTRL/CMD+C pressed:
