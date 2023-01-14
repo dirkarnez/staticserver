@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/dirkarnez/staticserver/views"
+	"github.com/iris-contrib/middleware/cors"
 	"github.com/kataras/iris/v12"
 	"gopkg.in/yaml.v3"
 )
@@ -59,6 +60,12 @@ func main() {
 	app := iris.New()
 	app.Use(iris.Compression)
 	app.Use(iris.NoCache)
+	crs := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowCredentials: true,
+	})
+	app.Use(crs)
+
 	app.OnErrorCode(iris.StatusNotFound, func(ctx iris.Context) {
 		ctx.Writef("404 not found here")
 	})
