@@ -11,6 +11,7 @@ staticserver
 
 ### TODOs
 - [x] **HTTPS**
+  - `%USERPROFILE%\Downloads\PortableGit\usr\bin\openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -subj '/CN=localhost' -keyout server.key -out server.crt`
 - [ ] **pdf mode** **(requires https)**
   - a LAN version of [dirkarnez/webcam-playground](https://github.com/dirkarnez/webcam-playground) which the `.pdf` file is uploaded to the host computer
 - [ ] **encoder mode**
