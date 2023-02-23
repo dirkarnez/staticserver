@@ -121,10 +121,12 @@ func main() {
 	default:
 		log.Fatalf("%s mode is not supported\n", mode)
 	}
-
+	
 	log.Printf("Listening on %d, serving %s, in %s mode\n", port, root, mode)
-	err := app.Listen( // Start the web server at localhost:8080
-		fmt.Sprintf(":%d", port),
+
+	
+	err := app.Run(
+		iris.TLS(fmt.Sprintf(":%d", port), "mycert.crt", "mykey.key"),
 		// skip err server closed when CTRL/CMD+C pressed:
 		iris.WithoutServerError(iris.ErrServerClosed),
 		// enables faster json serialization and more:
