@@ -14,8 +14,10 @@ jobs:
     env:
       targetZip: ${{ github.event.repository.name }}-${{ github.ref_name }}-${{ matrix.os }}.zip
     steps:
-      - uses: actions/checkout@v2
-      
+      - uses: actions/checkout@v4
+        with:
+          ref: "2.0.0"
+          
       - name: Setup go
         uses: actions/setup-go@v4
         with:
