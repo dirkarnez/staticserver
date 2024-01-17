@@ -27,6 +27,8 @@ staticserver
   - [ ] Streaming (Music, Videos, text files)
 - [x] Upload Server
 - [ ] Directory-synchronization server
+  - https://github.com/elgs/filesync
+  - [Building a Go-based file synchronization tool | Reintech media](https://reintech.io/blog/building-go-based-file-synchronization-tool)
 - [ ] Chatroom
   - [ ] Clipboard Server
 - [ ] Fix MIMEType, add customization support
