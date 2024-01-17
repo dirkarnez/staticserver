@@ -29,6 +29,7 @@ staticserver
 - [ ] Directory-synchronization server
   - https://github.com/elgs/filesync
   - [Building a Go-based file synchronization tool | Reintech media](https://reintech.io/blog/building-go-based-file-synchronization-tool)
+  - [no-src/gofs: A cross-platform real-time file synchronization tool out of the box based on Golang](https://github.com/no-src/gofs)
 - [ ] Chatroom
   - [ ] Clipboard Server
 - [ ] Fix MIMEType, add customization support
