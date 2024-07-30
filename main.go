@@ -126,7 +126,7 @@ func main() {
 
 	
 	err := app.Run(
-		iris.TLS(fmt.Sprintf(":%d", port), "server.crt", "server.key"),
+		iris.TLS(fmt.Sprintf(":%d", port), filepath.Join(root, "server.crt"), filepath.Join(root, "server.key")),
 		// skip err server closed when CTRL/CMD+C pressed:
 		iris.WithoutServerError(iris.ErrServerClosed),
 		// enables faster json serialization and more:
