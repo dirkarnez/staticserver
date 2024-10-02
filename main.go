@@ -22,12 +22,14 @@ import (
 
 var (
 	port uint64
+	https bool
 	root string
 	mode string
 )
 
 func main() {
 	flag.StringVar(&root, "root", "", "Absolute path for root directory")
+	flag.BoolVar(&https, "https", true, "Enable https")
 	flag.Uint64Var(&port, "port", 80, "Port, default is 80")
 	flag.StringVar(&mode, "mode", "", "Mode: fs, spa, upload, clipboard. Default fs mode")
 	flag.Parse()
@@ -124,14 +126,25 @@ func main() {
 	
 	log.Printf("Listening on %d, serving %s, in %s mode\n", port, root, mode)
 
-	
-	err := app.Run(
-		iris.TLS(fmt.Sprintf(":%d", port), filepath.Join(root, "server.crt"), filepath.Join(root, "server.key")),
-		// skip err server closed when CTRL/CMD+C pressed:
-		iris.WithoutServerError(iris.ErrServerClosed),
-		// enables faster json serialization and more:
-		iris.WithOptimizations,
-	)
+	var err error = nil
+	if https {
+		err = app.Run(
+			iris.TLS(fmt.Sprintf(":%d", port), filepath.Join(root, "server.crt"), filepath.Join(root, "server.key")),
+			// skip err server closed when CTRL/CMD+C pressed:
+			iris.WithoutServerError(iris.ErrServerClosed),
+			// enables faster json serialization and more:
+			iris.WithOptimizations,
+		)
+	} else {
+		err = app.Listen(
+			fmt.Sprintf(":%d", port),
+			// skip err server closed when CTRL/CMD+C pressed:
+			iris.WithoutServerError(iris.ErrServerClosed),
+			// enables faster json serialization and more:
+			iris.WithOptimizations,
+		)
+	}
+
 	if err != nil {
 		log.Fatal(err)
 	}

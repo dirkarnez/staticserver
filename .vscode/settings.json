@@ -1,0 +1,25 @@
+{
+    "terminal.integrated.profiles.windows": {
+        "PowerShell": null,
+        "Windows PowerShell": null,
+        // "Custom Init": {
+        //     "path": "pwsh.exe",
+        //     "args": [
+        //     //    "-noexit",
+        //     //    "-file",
+        //     //    "${env:APPDATA}\\PowerShell\\custom-init.ps1"
+        //     ]
+        // }
+        // "bash": {
+        //     "path": "${env:USERPROFILE}\\Downloads\\PortableGit\\git-bash.exe",
+        "Command Prompt": {
+            "path": "${env:windir}\\System32\\cmd.exe",
+            "env": { 
+                "GOROOT": "${env:USERPROFILE}\\Downloads\\go1.21.0.windows-amd64\\go",
+                "GOPATH": "${env:USERPROFILE}\\Downloads\\gopath",
+                "PATH": "D:\\Softwares\\PortableGit\\bin;${env:USERPROFILE}\\Downloads\\go1.21.0.windows-amd64\\go\\bin"
+            }
+        }
+    },
+    "terminal.integrated.defaultProfile.windows": "Command Prompt"
+}
