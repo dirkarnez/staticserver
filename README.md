@@ -55,6 +55,7 @@ staticserver
 ### MIME
 - [Common MIME types - HTTP | MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types)
 - Sample `mime.yaml` file (in case user-defined mime is needed, create one under the working directory)
+- [yhirose/cpp-httplib: A C++ header-only HTTP/HTTPS server and client library](https://github.com/yhirose/cpp-httplib/?tab=readme-ov-file#static-file-server)
 ```yaml
 .otf: font/otf
 .woff: font/woff
