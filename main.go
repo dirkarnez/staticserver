@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"mime"
+	"net"
 	"net/http"
 	"os"
 	"os/exec"
@@ -186,3 +187,38 @@ func openURL(url string) error {
 	}
 	return err
 }
+
+// func main() {
+// 	// Get a list of all network interfaces
+// 	interfaces, err := net.Interfaces()
+// 	if err != nil {
+// 		fmt.Println("Error:", err)
+// 		return
+// 	}
+
+// 	// Iterate through the interfaces
+// 	for _, iface := range interfaces {
+// 		// Skip down or loopback interfaces
+// 		if iface.Flags&net.FlagUp == 0 || iface.Flags&net.FlagLoopback != 0 {
+// 			continue
+// 		}
+
+// 		// Get the addresses associated with the interface
+// 		addrs, err := iface.Addrs()
+// 		if err != nil {
+// 			fmt.Println("Error:", err)
+// 			continue
+// 		}
+
+// 		// Iterate through the addresses
+// 		for _, addr := range addrs {
+// 			// Check if the address is an IP address
+// 			if ipNet, ok := addr.(*net.IPNet); ok && ipNet.IP.IsPrivate() {
+// 				fmt.Println("LAN IP Address:", ipNet.IP.String())
+// 			}
+// 		}
+// 	}
+// 	fmt.Println("End")
+// }
+
+
