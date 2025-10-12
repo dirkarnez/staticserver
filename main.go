@@ -188,6 +188,16 @@ func openURL(url string) error {
 	return err
 }
 
+func shouldBeVirtual(name string) bool {
+	for _, lookup := range []string{"vEthernet", "VMware"} {
+	    if strings.Contains(name, lookup) {
+	      return true
+	    }
+	}
+	return false
+}
+
+
 func GetLANIP() {
 	// Get a list of all network interfaces
 	interfaces, err := net.Interfaces()
@@ -200,6 +210,10 @@ func GetLANIP() {
 	for _, iface := range interfaces {
 		// Skip down or loopback interfaces
 		if iface.Flags&net.FlagUp == 0 || iface.Flags&net.FlagLoopback != 0 {
+			continue
+		}
+
+		if shouldBeVirtual(iface.Name) {
 			continue
 		}
 
@@ -220,6 +234,7 @@ func GetLANIP() {
 	}
 	fmt.Println("End")
 }
+
 
 
 
